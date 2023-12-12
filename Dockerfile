@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 COPY GRANULE_* /tmp/
 COPY issue-230-workaround /usr/local/bin/
 RUN apt-get update && \
-    apt-get install -y wget unzip locales && \
+    apt-get install -y wget unzip locales python3 && \
     wget https://github.com/granule-project/granule/releases/download/v$(cat /tmp/GRANULE_VERSION)/granule-v$(cat /tmp/GRANULE_VERSION)-linux_x86_64.zip \
         -O /tmp/granule.zip && \
     locale-gen "en_US.UTF-8" && \
