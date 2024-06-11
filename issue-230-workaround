@@ -1,8 +1,0 @@
-#!/usr/bin/env python3
-
-import sys
-output = sys.stdin.read();
-if output.endswith("()\n"):
-    output = output[:-3]
-
-print(output, end="")

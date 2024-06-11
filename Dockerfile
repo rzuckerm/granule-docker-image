@@ -1,19 +1,14 @@
-FROM ubuntu:22.04
+FROM haskell:9.2.8-slim-buster AS builder
 
 COPY GRANULE_* /tmp/
-COPY issue-230-workaround /usr/local/bin/
 RUN apt-get update && \
-    apt-get install -y wget unzip locales python3 && \
-    wget https://github.com/granule-project/granule/releases/download/v$(cat /tmp/GRANULE_VERSION)/granule-v$(cat /tmp/GRANULE_VERSION)-linux_x86_64.zip \
-        -O /tmp/granule.zip && \
-    locale-gen "en_US.UTF-8" && \
-    update-locale LC_ALL="en_US.UTF-8" && \
-    cd /tmp && \
-    unzip granule.zip && \
-    mv granule*/* /usr/local/bin &&\
-    cd / && \
-    apt-get remove -y wget unzip && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/granule*
-ENV LC_ALL="en_US.UTF-8"
+    apt-get install -y z3 && \
+    mkdir -p /opt && \
+    cd /opt && \
+    git clone https://github.com/granule-project/granule && \
+    cd granule && \
+    git reset --hard $(cat /tmp/GRANULE_COMMIT) && \
+    stack install
+
+FROM debian:buster-20240423-slim AS app
+COPY --from=builder /root/.local/bin/gr* /usr/local/bin/

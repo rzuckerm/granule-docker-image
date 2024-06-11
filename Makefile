@@ -1,5 +1,5 @@
 GRANULE_VERSION := $(shell cat GRANULE_VERSION)
-GRANULE_DEPS := $(wildcard GRANULE_*) issue-230-workaround
+GRANULE_DEPS := $(wildcard GRANULE_*)
 DOCKER_TAG_PREFIX := rzuckerm/granule:$(GRANULE_VERSION)
 DOCKER_TAG_SUFFIX ?= -dev
 
