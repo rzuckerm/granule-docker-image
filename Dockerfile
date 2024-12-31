@@ -9,5 +9,10 @@ RUN apt-get update && \
     cd granule && \
     stack install
 
-FROM debian:buster-20240423-slim AS app
+FROM debian:bookworm-20241223 AS app
 COPY --from=builder /root/.local/bin/gr* /usr/local/bin/
+COPY --from=builder /opt/granule/StdLib/* /usr/local/lib/
+ENV LANG=C.UTF-8
+RUN apt-get update && \
+    apt-get install -y z3 && \
+    rm -rf /var/lib/apt/lists/*
