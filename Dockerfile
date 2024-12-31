@@ -5,9 +5,8 @@ RUN apt-get update && \
     apt-get install -y z3 && \
     mkdir -p /opt && \
     cd /opt && \
-    git clone https://github.com/granule-project/granule && \
+    git clone https://github.com/granule-project/granule -b v$(cat /tmp/GRANULE_VERSION) && \
     cd granule && \
-    git reset --hard $(cat /tmp/GRANULE_COMMIT) && \
     stack install
 
 FROM debian:buster-20240423-slim AS app
